@@ -71,14 +71,12 @@ void UpdateProjectile(Projectile* p) {
             p->position.y < 0 || p->position.y > GetScreenHeight()) {
             p->active = false;
         }
-
-        if (IsKeyPressed(KEY_C)) {
-            p->tipo = p->tipo->prox;
-        }
-        else if (IsKeyPressed(KEY_X)) {
-            p->tipo = p->tipo->ant;
-        }
-
+    }
+    if (IsKeyPressed(KEY_C)) {
+        p->tipo = p->tipo->prox;
+    }
+    else if (IsKeyPressed(KEY_X)) {
+        p->tipo = p->tipo->ant;
     }
 }
 

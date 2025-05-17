@@ -1,4 +1,4 @@
 ﻿  projetil.c
-C:\Users\felip\projetos\WitchsJourney\src\projetil.c(95,56): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\felip\projetos\WitchsJourney\src\projetil.c(95,74): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\projetil.c(93,56): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\projetil.c(93,74): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
   WJquickstart.vcxproj -> C:\Users\felip\projetos\WitchsJourney\bin\Debug\WJquickstart.exe
