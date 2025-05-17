@@ -1,4 +1,4 @@
-#include "cora.h"
+ï»¿#include "cora.h"
 #include "enemy.h"
 
 Cora initCora(void) {
@@ -6,7 +6,7 @@ Cora initCora(void) {
     cora.isAlive = true;
     cora.health = 100;
     cora.position = (Vector2){ 640, 360 };
-    cora.speed = (Vector2){ 2.5f, 2.5f };
+    cora.speed = (Vector2){ 3.18f, 3.18f };
     cora.direction = DIR_IDLE;
 
     // Carregando texturas de spritesheet
@@ -15,17 +15,17 @@ Cora initCora(void) {
     cora.textures[DIR_LEFT] = LoadTexture("resources/assets/esquerda.png");
     cora.textures[DIR_RIGHT] = LoadTexture("resources/assets/direita.png");
     cora.textures[DIR_IDLE] = LoadTexture("resources/assets/idle.png");
-	cora.textures[DIR_DYING] = LoadTexture("resources/assets/Dying_KG_1.png");
+    cora.textures[DIR_DYING] = LoadTexture("resources/assets/Dying_KG_1.png");
 
-    // Definindo quantidade de frames de cada animação
+    // Definindo quantidade de frames de cada animaÃ§Ã£o
     cora.frames[DIR_DOWN] = 4;
     cora.frames[DIR_UP] = 4;
     cora.frames[DIR_LEFT] = 7;
     cora.frames[DIR_RIGHT] = 7;
     cora.frames[DIR_IDLE] = 4;
-	cora.frames[DIR_DYING] = 5;
+    cora.frames[DIR_DYING] = 5;
 
-    // Inicialização do controle de animação
+    // InicializaÃ§Ã£o do controle de animaÃ§Ã£o
     cora.frameSpeed = 8;
     cora.frameCounter = 0;
     cora.currentFrame = 0;
@@ -52,25 +52,25 @@ void updateCora(Cora* cora) {
     // limites do mapa
     const float minX = 0.0f;
     const float minY = 0.0f;
-    const float maxX = 1280.0f - cora->frameRec.width;   // largura da janela – largura do sprite
-    const float maxY = 720.0f  - cora->frameRec.height;  // altura  da janela – altura  do sprite
+    const float maxX = 1280.0f - cora->frameRec.width;   // largura da janela â€“ largura do sprite
+    const float maxY = 720.0f - cora->frameRec.height;  // altura  da janela â€“ altura  do sprite
 
-	// Verifica se Cora está dentro dos limites do mapa
+    // Verifica se Cora estÃ¡ dentro dos limites do mapa
     if (cora->position.x < minX) cora->position.x = minX;
     if (cora->position.x > maxX) cora->position.x = maxX;
     if (cora->position.y < minY) cora->position.y = minY;
     if (cora->position.y > maxY) cora->position.y = maxY;
 
-	// verifica se Cora tá viva
+    // verifica se Cora tÃ¡ viva
     if (!cora->isAlive) {
-        // se não estiver, reproduz os frames da morte
+        // se nÃ£o estiver, reproduz os frames da morte
         cora->frameCounter++;
         if (cora->frameCounter >= (60 / cora->frameSpeed)) {
             cora->frameCounter = 0;
             cora->currentFrame++;
 
             if (cora->currentFrame >= cora->frames[DIR_DYING]) {
-                cora->currentFrame = cora->frames[DIR_DYING] - 1; // Para no último frame
+                cora->currentFrame = cora->frames[DIR_DYING] - 1; // Para no Ãºltimo frame
             }
         }
 
@@ -84,35 +84,38 @@ void updateCora(Cora* cora) {
             (float)dyingTexture.height
         };
 
-        return; // ?? Não atualiza posição nem hitbox se estiver morta
+        return; // NÃ£o atualiza posiÃ§Ã£o nem hitbox se estiver morta
     }
 
+    // movimentaÃ§Ã£o padrÃ£o da cora
+    if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))  input.x += 1;
+    if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))  input.x -= 1;
+    if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))  input.y -= 1;
+    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))  input.y += 1;
 
-    if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
-        input.x += 3;
-        cora->direction = DIR_RIGHT;
-    }
-    else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
-        input.x -= 3;
-        cora->direction = DIR_LEFT;
-    }
-    else if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
-        input.y -= 3;
-        cora->direction = DIR_UP;
-    }
-    else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
-        input.y += 3;
-        cora->direction = DIR_DOWN;
-    }
-    else {
+    // atualizando a direÃ§Ã£o
+    if (input.x == 0 && input.y == 0) {
         cora->direction = DIR_IDLE;
     }
+    else {
+        // aqui tÃ¡ dando prioridade para animaÃ§Ã£o horizontal
+        if (input.x != 0)
+            cora->direction = (input.x > 0) ? DIR_RIGHT : DIR_LEFT;
+        else
+            cora->direction = (input.y > 0) ? DIR_DOWN : DIR_UP;
+    }
 
-    // Atualiza posição
+    // normalizando a velocidade diagonal (obs: fica mt rÃ¡pido na diagonal se nÃ£o tiver esse if)
+    if (input.x != 0 && input.y != 0) {
+        input.x *= 0.7071f;   // 1/âˆš2 p manter velocidade constante na diagonal
+        input.y *= 0.7071f;
+    }
+
+    // atualiza a posiÃ§Ã£o
     cora->position.x += input.x * cora->speed.x;
     cora->position.y += input.y * cora->speed.y;
 
-    // Atualiza animação
+    // atualiza a animaÃ§Ã£o
     cora->frameCounter++;
     if (cora->frameCounter >= (60 / cora->frameSpeed)) {
         cora->frameCounter = 0;
@@ -123,7 +126,7 @@ void updateCora(Cora* cora) {
         }
     }
 
-    // Atualiza recorte da animação
+    // atualiza o frameRec (recorte)
     Texture2D current = cora->textures[cora->direction];
     int maxFrames = cora->frames[cora->direction];
     cora->frameRec = (Rectangle){
@@ -133,19 +136,19 @@ void updateCora(Cora* cora) {
         (float)current.height
     };
 
-    // Atualiza hitbox com a nova posição
-     cora->hitbox = (Rectangle){
-     cora->position.x + 30,
-     cora->position.y,
-     cora->frameRec.width - 60,
-     cora->frameRec.height
+    // hitbox da cora
+    cora->hitbox = (Rectangle){
+        cora->position.x + 30,
+        cora->position.y,
+        cora->frameRec.width - 60,
+        cora->frameRec.height
     };
 }
 
 void drawCora(Cora* cora) {
     Texture2D textureToDraw;
 
-    // visualização da Cora dependendo do estado dela, entrando no else se health chegar a 0, e textura indo pra a de dying
+    // visualizaÃ§Ã£o da Cora dependendo do estado dela, entrando no else se health chegar a 0, e textura indo pra a de dying
     if (cora->isAlive) {
         textureToDraw = cora->textures[cora->direction];
     }
