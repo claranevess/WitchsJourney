@@ -1,6 +1,4 @@
-﻿  map1.c
-C:\Users\gabsm\source\repos\WitchsJourney\src\map1.c(97,43): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\map1.c(98,43): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-  projetil.c
-  Gerando Código...
-  WJquickstart.vcxproj -> C:\Users\gabsm\source\repos\WitchsJourney\bin\Debug\WJquickstart.exe
+﻿  projetil.c
+C:\Users\felip\projetos\WitchsJourney\src\projetil.c(95,56): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\projetil.c(95,74): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+  WJquickstart.vcxproj -> C:\Users\felip\projetos\WitchsJourney\bin\Debug\WJquickstart.exe

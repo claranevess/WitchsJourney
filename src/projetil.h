@@ -2,6 +2,7 @@
 #define PROJETIL_H
 
 #include "raylib.h"
+#include <stdio.h>
 #include <stdbool.h>
 #include "cora.h"
 
@@ -19,8 +20,11 @@ typedef struct Projectile {
     Texture2D texture;
     Rectangle frameRec;
     float scale;
+    Node* tipo;
 } Projectile;
 
+const char* GetAttackName(int valor);
+Node* CreateAttackTypes();
 void InitProjectile(Projectile* p, Texture2D texture);
 void ShootProjectile(Projectile* p, Cora* cora);
 void UpdateProjectile(Projectile* p);
