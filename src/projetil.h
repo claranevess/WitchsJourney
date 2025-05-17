@@ -7,7 +7,7 @@
 #include "cora.h"
 
 typedef struct Node {
-    int valor; // valor indo de 1 a 4 e compondo os tipos dos ataques, 1 = Água; 2 = Terra; 3 = Vento; 4 = Fogo;
+    int valor; // valor indo de 1 a 4 e compondo os tipos dos ataques, 1 = Agua; 2 = Terra; 3 = Vento; 4 = Fogo;
     struct Node* prox;
     struct Node* ant;
 } Node;                                 

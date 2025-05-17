@@ -18,6 +18,7 @@ extern Texture2D enemy4;
 extern Texture2D enemy5;
 extern Texture2D enemy6;
 extern Texture2D backgroundleaderboard;
+extern Texture2D aguaIcon, terraIcon, ventoIcon, fogoIcon;
 
 void InitAssets(void);
 void UnloadAssets(void);

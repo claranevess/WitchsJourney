@@ -27,7 +27,7 @@ void InitAssets(void) {
     background3 = LoadTexture("resources/assets/background3.png");
     background4 = LoadTexture("resources/assets/background4.png");
 
-    player = LoadTexture("resources/assets/player.png");
+    player = LoadTexture("resources/assets/player.png");    
 
     enemy = LoadTexture("resources/assets/enemy.png");
     enemy2 = LoadTexture("resources/assets/enemy2.png");

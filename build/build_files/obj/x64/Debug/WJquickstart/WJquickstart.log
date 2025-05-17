@@ -1,4 +1,22 @@
 ﻿  cora.c
+  enemy.c
 C:\Users\felip\projetos\WitchsJourney\src\cora.c(167,64): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
 C:\Users\felip\projetos\WitchsJourney\src\cora.c(167,85): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\enemy.c(46,42): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\enemy.c(46,65): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\enemy.c(49,48): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\enemy.c(52,42): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\enemy.c(52,90): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\enemy.c(55,42): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
+  map1.c
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,34): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,41): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,51): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,61): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(109,47): warning C4244: 'função': conversão de 'const int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(109,60): warning C4244: 'função': conversão de 'const int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(120,43): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(121,43): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+  tools.c
+  Gerando Código...
   WJquickstart.vcxproj -> C:\Users\felip\projetos\WitchsJourney\bin\Debug\WJquickstart.exe

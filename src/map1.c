@@ -48,10 +48,10 @@ void map1(void) {
 
     #define MAX_ENEMIES 10
 
-    // Criando e inicializando v�rios inimigos
+    // Criando e inicializando os inimigos
     Enemy enemies[MAX_ENEMIES];
     for (int i = 0; i < MAX_ENEMIES; i++) {
-        InitEnemy(&enemies[i]);
+        InitEnemy(&enemies[i],  GetRandomValue(1, 4));
     }
 
 
