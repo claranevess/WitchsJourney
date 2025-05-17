@@ -1,4 +1,10 @@
-﻿  projetil.c
-C:\Users\felip\projetos\WitchsJourney\src\projetil.c(93,56): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\felip\projetos\WitchsJourney\src\projetil.c(93,74): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+﻿  map1.c
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,34): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,41): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,51): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(23,61): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(109,47): warning C4244: 'função': conversão de 'const int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(109,60): warning C4244: 'função': conversão de 'const int' para 'float', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(120,43): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\felip\projetos\WitchsJourney\src\map1.c(121,43): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
   WJquickstart.vcxproj -> C:\Users\felip\projetos\WitchsJourney\bin\Debug\WJquickstart.exe

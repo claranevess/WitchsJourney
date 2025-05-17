@@ -6,7 +6,26 @@
 
 extern const int screenWidth;
 extern const int screenHeight;
+Texture2D aguaIcon, terraIcon, ventoIcon, fogoIcon, magicTex, background1;
 
+void DrawAttackInventory(Node* tipoAtual, float screenW, float screenH) {
+    float startX = screenW / 2 - 100;
+    float y = screenH - 80;
+    float size = 48;
+    float spacing = 10;
+
+    Texture2D icons[4] = { aguaIcon, terraIcon, ventoIcon, fogoIcon };
+    
+    for (int i = 0; i < 4; i++) {
+        float x = startX + i * (size + spacing);
+
+        if (tipoAtual->valor == i + 1) {
+            DrawRectangleLines(x - 2, y - 2, size + 4, size + 4, YELLOW);
+        }
+
+        DrawTextureEx(icons[i], (Vector2){ x, y }, 0.0f, size / icons[i].width, WHITE);
+    }
+}
 
 void map1(void) {
     bool showHitboxes = false;
@@ -14,18 +33,22 @@ void map1(void) {
     InitAudioDevice(); // se usar sons
     SetTargetFPS(60);
 
-    Texture2D background1 = LoadTexture("resources/assets/background1.png");
-    Texture2D magicTex = LoadTexture("resources/assets/projetil.png");
+    background1 = LoadTexture("resources/assets/background1.png");
+    magicTex = LoadTexture("resources/assets/projetil.png");
+    aguaIcon = LoadTexture("resources/assets/icons/agua_icon.png");
+    terraIcon = LoadTexture("resources/assets/icons/terra_icon.png");
+    ventoIcon = LoadTexture("resources/assets/icons/vento_icon.png");
+    fogoIcon = LoadTexture("resources/assets/icons/fogo_icon.png"); 
     Cora cora = initCora();
     
 
-    // Cria o projétil e deixa inativo
+    // Cria o projï¿½til e deixa inativo
     Projectile projectileW;
     InitProjectile(&projectileW, magicTex);
 
     #define MAX_ENEMIES 10
 
-    // Criando e inicializando vários inimigos
+    // Criando e inicializando vï¿½rios inimigos
     Enemy enemies[MAX_ENEMIES];
     for (int i = 0; i < MAX_ENEMIES; i++) {
         InitEnemy(&enemies[i]);
@@ -34,18 +57,17 @@ void map1(void) {
 
     while (!WindowShouldClose()) {
         updateCora(&cora);
-
         if (IsKeyPressed(KEY_H)) {
             showHitboxes = !showHitboxes;
         }
 
-        // Atualize inimigos e faça a colisão AQUI, dentro do loop while
+        // Atualize inimigos e faï¿½a a colisï¿½o AQUI, dentro do loop while
         for (int i = 0; i < MAX_ENEMIES; i++) {
             UpdateEnemy(&enemies[i], cora.position, cora.isAlive);
 
-            // Atualiza a hitbox do inimigo dentro do UpdateEnemy (já deve estar feito)
+            // Atualiza a hitbox do inimigo dentro do UpdateEnemy (jï¿½ deve estar feito)
 
-            // Colisão e dano
+            // Colisï¿½o e dano
             if (enemies[i].active && cora.isAlive &&
                 CheckCollisionRecs(cora.hitbox, enemies[i].hitbox)) {
 
@@ -74,16 +96,17 @@ void map1(void) {
             }
         }
 
-        // Dispara quando clicar com o botão esquerdo do mouse
+        // Dispara quando clicar com o botï¿½o esquerdo do mouse
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cora.isAlive) {
             ShootProjectile(&projectileW, &cora);
         }
 
-        // Atualiza a posição do projétil (mesmo se inativo faz nada)
+        // Atualiza a posiï¿½ï¿½o do projï¿½til (mesmo se inativo faz nada)
         UpdateProjectile(&projectileW);
 
         BeginDrawing();
         DrawTexture(background1, 0, 0, WHITE);
+        DrawAttackInventory(projectileW.tipo, screenWidth, screenHeight);
         drawCora(&cora);
 
         DrawProjectile(&projectileW);
@@ -103,7 +126,7 @@ void map1(void) {
 
         DrawDebugHitboxes(&cora, enemies, MAX_ENEMIES, showHitboxes);
 
-        // *** Aqui que você coloca a exibição da vida e da mensagem ***
+        // *** Aqui que vocï¿½ coloca a exibiï¿½ï¿½o da vida e da mensagem ***
         DrawText(TextFormat("Vida: %d", cora.health), 10, 10, 20, WHITE);
 
         if (!cora.isAlive) {
