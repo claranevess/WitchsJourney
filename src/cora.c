@@ -6,7 +6,7 @@ Cora initCora(void) {
     cora.isAlive = true;
     cora.health = 100;
     cora.position = (Vector2){ 640, 360 };
-    cora.speed = (Vector2){ 2.5f, 2.5f };
+    cora.speed = (Vector2){ 3.18f, 3.18f };
     cora.direction = DIR_IDLE;
 
     // Carregando texturas de spritesheet
@@ -53,15 +53,15 @@ void updateCora(Cora* cora) {
     const float minX = 0.0f;
     const float minY = 0.0f;
     const float maxX = 1280.0f - cora->frameRec.width;   // largura da janela – largura do sprite
-    const float maxY = 720.0f  - cora->frameRec.height;  // altura  da janela – altura  do sprite
+    const float maxY = 720.0f - cora->frameRec.height;  // altura  da janela – altura  do sprite
 
-	// Verifica se Cora está dentro dos limites do mapa
+    // Verifica se Cora está dentro dos limites do mapa
     if (cora->position.x < minX) cora->position.x = minX;
     if (cora->position.x > maxX) cora->position.x = maxX;
     if (cora->position.y < minY) cora->position.y = minY;
     if (cora->position.y > maxY) cora->position.y = maxY;
 
-	// verifica se Cora tá viva
+    // verifica se Cora tá viva
     if (!cora->isAlive) {
         // se não estiver, reproduz os frames da morte
         cora->frameCounter++;
@@ -84,35 +84,38 @@ void updateCora(Cora* cora) {
             (float)dyingTexture.height
         };
 
-        return; // ?? Não atualiza posição nem hitbox se estiver morta
+        return; // Não atualiza posição nem hitbox se estiver morta
     }
 
+    // movimentação padrão da cora
+    if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))  input.x += 1;
+    if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))  input.x -= 1;
+    if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))  input.y -= 1;
+    if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))  input.y += 1;
 
-    if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
-        input.x += 3;
-        cora->direction = DIR_RIGHT;
-    }
-    else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
-        input.x -= 3;
-        cora->direction = DIR_LEFT;
-    }
-    else if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
-        input.y -= 3;
-        cora->direction = DIR_UP;
-    }
-    else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
-        input.y += 3;
-        cora->direction = DIR_DOWN;
-    }
-    else {
+    // atualizando a direção
+    if (input.x == 0 && input.y == 0) {
         cora->direction = DIR_IDLE;
     }
+    else {
+        // aqui tá dando prioridade para animação horizontal
+        if (input.x != 0)
+            cora->direction = (input.x > 0) ? DIR_RIGHT : DIR_LEFT;
+        else
+            cora->direction = (input.y > 0) ? DIR_DOWN : DIR_UP;
+    }
 
-    // Atualiza posição
+	// normalizando a velocidade diagonal (obs: fica mt rápido na diagonal se não tiver esse if)
+    if (input.x != 0 && input.y != 0) {
+        input.x *= 0.7071f;   // 1/?2 p manter velocidade constante na diagonal
+        input.y *= 0.7071f;
+    }
+
+    // atualiza a posição
     cora->position.x += input.x * cora->speed.x;
     cora->position.y += input.y * cora->speed.y;
 
-    // Atualiza animação
+    // atualiza a animação
     cora->frameCounter++;
     if (cora->frameCounter >= (60 / cora->frameSpeed)) {
         cora->frameCounter = 0;
@@ -123,7 +126,7 @@ void updateCora(Cora* cora) {
         }
     }
 
-    // Atualiza recorte da animação
+	// atualiza o frameRec (recorte)
     Texture2D current = cora->textures[cora->direction];
     int maxFrames = cora->frames[cora->direction];
     cora->frameRec = (Rectangle){
@@ -133,12 +136,12 @@ void updateCora(Cora* cora) {
         (float)current.height
     };
 
-    // Atualiza hitbox com a nova posição
-     cora->hitbox = (Rectangle){
-     cora->position.x + 30,
-     cora->position.y,
-     cora->frameRec.width - 60,
-     cora->frameRec.height
+    // hitbox da cora
+    cora->hitbox = (Rectangle){
+        cora->position.x + 30,
+        cora->position.y,
+        cora->frameRec.width - 60,
+        cora->frameRec.height
     };
 }
 
