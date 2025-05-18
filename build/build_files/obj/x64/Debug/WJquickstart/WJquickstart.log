@@ -1,20 +1,2 @@
-﻿  enemy.c
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(59,42): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(59,65): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(62,48): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(65,42): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(65,90): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(68,42): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(147,19): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(147,22): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(147,25): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(147,35): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(150,19): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(150,22): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(150,34): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(150,51): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(153,24): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(153,27): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(153,30): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabsm\source\repos\WitchsJourney\src\enemy.c(153,40): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-  WJquickstart.vcxproj -> C:\Users\gabsm\source\repos\WitchsJourney\bin\Debug\WJquickstart.exe
+﻿  projetil.c
+  WJquickstart.vcxproj -> C:\Users\Jarbas\Desktop\testandojogodeAED\WitchsJourney\bin\Debug\WJquickstart.exe

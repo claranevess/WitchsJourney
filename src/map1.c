@@ -19,15 +19,22 @@ void map1(void)
     SetTargetFPS(60);
 
     background1 = LoadTexture("resources/assets/background1.png");
-    magicTex = LoadTexture("resources/assets/projetil.png");
     aguaIcon = LoadTexture("resources/assets/icons/agua_icon.png");
     terraIcon = LoadTexture("resources/assets/icons/terra_icon.png");
     ventoIcon = LoadTexture("resources/assets/icons/vento_icon.png");
     fogoIcon = LoadTexture("resources/assets/icons/fogo_icon.png");
 
+    // Projeteis
+    Texture2D projectileTextures[4];
+    projectileTextures[0] = LoadTexture("resources/assets/proj_agua.png");
+    projectileTextures[1] = LoadTexture("resources/assets/proj_terra.png");
+    projectileTextures[2] = LoadTexture("resources/assets/proj_vento.png");
+    projectileTextures[3] = LoadTexture("resources/assets/proj_fogo.png");
+
+
     Cora cora = initCora();
-    Projectile proj;
-    InitProjectile(&proj, magicTex);
+    Projectile projectileW;
+    InitProjectile(&projectileW, projectileTextures);
 
 #define MAX_ENEMIES 30
     Enemy enemies[MAX_ENEMIES];
@@ -61,13 +68,13 @@ void map1(void)
             }
 
             // colisão projétil x inimigo 
-            if (proj.active && enemies[i].active &&
-                CheckCollisionCircleRec(proj.position,
-                    proj.frameRec.width * proj.scale * 0.5f,
+            if (projectileW.active && enemies[i].active &&
+                CheckCollisionCircleRec(projectileW.position,
+                    projectileW.frameRec.width * projectileW.scale * 0.5f,
                     enemies[i].hitbox))
             {
                 enemies[i].health--;
-                proj.active = false;
+                projectileW.active = false;
                 if (enemies[i].health <= 0) enemies[i].active = false;
             }
 
@@ -76,8 +83,8 @@ void map1(void)
         }
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cora.isAlive)
-            ShootProjectile(&proj, &cora);
-        UpdateProjectile(&proj);
+            ShootProjectile(&projectileW, &cora);
+        UpdateProjectile(&projectileW);
 
         if (enemiesAlive <= 0) {                           // todos morreram
             wavePtr = wavePtr->next;                       // próxima horda
@@ -91,17 +98,14 @@ void map1(void)
         ClearBackground(BLACK);
         DrawTexture(background1, 0, 0, WHITE);
 
-        DrawAttackInventory(proj.tipo, screenWidth, screenHeight);
+        DrawAttackInventory(projectileW.tipo, screenWidth, screenHeight);
         drawCora(&cora);
-        DrawProjectile(&proj);
+        DrawProjectile(&projectileW);
 
         for (int i = 0; i < MAX_ENEMIES; i++) {
             DrawEnemy(&enemies[i]);
             if (enemies[i].active)
-                DrawText(TextFormat("%d", enemies[i].health),
-                    enemies[i].position.x + 75,
-                    enemies[i].position.y + 40,
-                    20, WHITE);
+                DrawEnemyHealthBar(&enemies[i]);
         }
 
         DrawDebugHitboxes(&cora, enemies, MAX_ENEMIES, showHit);
@@ -126,6 +130,10 @@ void map1(void)
     for (int i = 0; i < MAX_ENEMIES; i++) UnloadEnemy(&enemies[i]);
     UnloadTexture(magicTex);
     UnloadTexture(background1);
+    // unload Projeteis
+    for (int i = 0; i < 4; i++) {
+        UnloadTexture(projectileTextures[i]);
+    }
     CloseWindow();
 }
 

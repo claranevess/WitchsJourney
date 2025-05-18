@@ -29,19 +29,28 @@ Node* CreateAttackTypes() {
 }
 
 
-void InitProjectile(Projectile* p, Texture2D texture) {
-    p->texture = texture;
+void InitProjectile(Projectile* p, Texture2D textures[4]) {
+    for (int i = 0; i < 4; i++) {
+        p->textures[i] = textures[i];
+    }
+
     p->position = (Vector2){ 0, 0 };
     p->direction = (Vector2){ 0, 0 };
     p->speed = 8.0f;
     p->active = false;
-    p->scale = 2.0f;
+    p->scale = 1.2f;
     p->tipo = CreateAttackTypes();
 
+    p->maxFrames = 5;
+    p->currentFrame = 0;
+    p->frameSpeed = 8.0f;
+    p->frameCounter = 0;
+
+    // Assuma que todas as texturas têm as mesmas dimensões
     p->frameRec = (Rectangle){
         0, 0,
-        (float)texture.width,
-        (float)texture.height
+        (float)p->textures[0].width / p->maxFrames,
+        (float)p->textures[0].height
     };
 }
 
@@ -71,6 +80,17 @@ void UpdateProjectile(Projectile* p) {
             p->position.y < 0 || p->position.y > GetScreenHeight()) {
             p->active = false;
         }
+
+        // Atualização de animação
+        p->frameCounter += GetFrameTime() * p->frameSpeed;
+        if (p->frameCounter >= 1) {
+            p->currentFrame++;
+            if (p->currentFrame >= p->maxFrames) {
+                p->currentFrame = 0;
+            }
+            p->frameRec.x = (float)p->currentFrame * p->frameRec.width;
+            p->frameCounter = 0;
+        }
     }
     if (IsKeyPressed(KEY_C)) {
         p->tipo = p->tipo->prox;
@@ -81,16 +101,23 @@ void UpdateProjectile(Projectile* p) {
 }
 
 void DrawProjectile(Projectile* p) {
-    if (p->active) {
-        DrawTextureEx(
-            p->texture,
-            p->position,
-            0.0f,
-            p->scale,
-            WHITE
-        );
-    }
-    DrawText(GetAttackName(p->tipo->valor), p->position.x, p->position.y - 20, 20, WHITE);
+    if (!p->active) return;
+
+    int index = p->tipo->valor - 1;
+    Texture2D tex = p->textures[index];
+
+    Rectangle dest = {
+        p->position.x,
+        p->position.y,
+        p->frameRec.width * p->scale,
+        p->frameRec.height * p->scale
+    };
+
+    Vector2 origin = { dest.width / 2, dest.height / 2 };
+    float angle = atan2f(p->direction.y, p->direction.x) * RAD2DEG;
+
+    DrawTexturePro(tex, p->frameRec, dest, origin, angle, WHITE);
+    //DrawText(GetAttackName(p->tipo->valor), p->position.x - 20, p->position.y - 40, 20, WHITE);
 }
 
 

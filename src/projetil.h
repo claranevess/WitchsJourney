@@ -17,15 +17,20 @@ typedef struct Projectile {
     Vector2 direction;
     float speed;
     bool active;
-    Texture2D texture;
+    Texture2D textures[4];
     Rectangle frameRec;
     float scale;
     Node* tipo;
+    // Animação
+    int currentFrame;
+    int maxFrames;
+    float frameSpeed;
+    float frameCounter;
 } Projectile;
 
 const char* GetAttackName(int valor);
 Node* CreateAttackTypes();
-void InitProjectile(Projectile* p, Texture2D texture);
+void InitProjectile(Projectile* p, Texture2D textures[4]);
 void ShootProjectile(Projectile* p, Cora* cora);
 void UpdateProjectile(Projectile* p);
 void DrawProjectile(Projectile* p);
