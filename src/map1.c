@@ -67,15 +67,24 @@ void map1(void)
                 if (cora.health <= 0) { cora.health = 0; cora.isAlive = false; }
             }
 
-            // colisão projétil x inimigo 
             if (projectileW.active && enemies[i].active &&
                 CheckCollisionCircleRec(projectileW.position,
                     projectileW.frameRec.width * projectileW.scale * 0.5f,
-                    enemies[i].hitbox))
-            {
-                enemies[i].health--;
+                    enemies[i].hitbox)) {
+
+                int tipoAtaque = projectileW.tipo->valor;
+                int tipoDefesa = enemies[i].tipo;
+
+                float multiplicador = GetDamageMultiplier(tipoAtaque, tipoDefesa);
+
+                float dano = 1.0f * multiplicador;
+
+                enemies[i].health -= dano;
                 projectileW.active = false;
-                if (enemies[i].health <= 0) enemies[i].active = false;
+
+                if (enemies[i].health <= 0) {
+                    enemies[i].active = false;
+                }
             }
 
 			// decrementação de inimigos vivos
@@ -88,7 +97,7 @@ void map1(void)
 
         if (enemiesAlive <= 0) {                           // todos morreram
             wavePtr = wavePtr->next;                       // próxima horda
-            waveNum += 1;                   // 1→2→…→5→1
+            waveNum += 1;
             spawnWave(enemies, MAX_ENEMIES, wavePtr);      // recria inimigos
             enemiesAlive = wavePtr->normal + wavePtr->boss;// reinicia contagem
 			framesMsg = 180;                               // mostra “HORDA N! durante 3s

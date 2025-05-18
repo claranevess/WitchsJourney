@@ -10,28 +10,28 @@ void InitEnemy(Enemy* enemy, int tipo) {
     switch (tipo) {
         case 1:
             enemy->texture = LoadTexture("resources/assets/enemy.png");
-            enemy->health = 2;
+            enemy->health = 2.0f;
             enemy->maxHealth = enemy->health;
             enemy->speed = 1.5f;
             enemy->maxFrames = 7;
             break;
         case 2:
             enemy->texture = LoadTexture("resources/assets/morcego.png");
-            enemy->health = 1;
+            enemy->health = 1.0f;
             enemy->maxHealth = enemy->health;
             enemy->speed = 2.0f;
             enemy->maxFrames = 8;
             break;
         case 3:
             enemy->texture = LoadTexture("resources/assets/boss.png");
-            enemy->health = 5;
+            enemy->health = 5.0f;
             enemy->maxHealth = enemy->health;
             enemy->speed = 0.8f;
             enemy->maxFrames = 4;
             break;
         case 4:
             enemy->texture = LoadTexture("resources/assets/goblin.png");
-            enemy->health = 3;
+            enemy->health = 3.0f;
             enemy->maxHealth = enemy->health;
             enemy->speed = 1.2f;
             enemy->maxHealth = enemy->health;
@@ -39,9 +39,10 @@ void InitEnemy(Enemy* enemy, int tipo) {
             break;
         case 5: // BOSS
             enemy->texture = LoadTexture("resources/assets/boss.png");
-            enemy->health = 15;
+            enemy->health = 15.0f;
             enemy->maxHealth = enemy->health;
             enemy->speed = 1.0f;
+            enemy->scale = 3.0f;
             enemy->maxFrames = 4;
             break;
 

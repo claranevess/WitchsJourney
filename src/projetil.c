@@ -2,6 +2,19 @@
 #include "raymath.h" // Para Vector2Normalize
 #include <stdlib.h>
 
+float GetDamageMultiplier(int tipoAtaque, int tipoDefesa) {
+    float tabela[4][5] = {
+        {0.0f, 1.0f, 2.0f, 0.5f, 1.0f},
+        {1.0f, 0.0f, 0.5f, 2.0f, 1.0f},
+        {0.5f, 2.0f, 0.0f, 1.0f, 1.0f},
+        {2.0f, 0.5f, 1.0f, 0.0f, 1.0f}
+    };
+
+    int col = tipoAtaque - 1;
+    int row = tipoDefesa - 1;
+
+    return tabela[row][col];
+}
 
 Node* CreateAttackTypes() {
     Node* agua = (Node*)malloc(sizeof(Node));
@@ -46,7 +59,7 @@ void InitProjectile(Projectile* p, Texture2D textures[4]) {
     p->frameSpeed = 8.0f;
     p->frameCounter = 0;
 
-    // Assuma que todas as texturas têm as mesmas dimensões
+    // Assuma que todas as texturas tï¿½m as mesmas dimensï¿½es
     p->frameRec = (Rectangle){
         0, 0,
         (float)p->textures[0].width / p->maxFrames,
@@ -81,7 +94,7 @@ void UpdateProjectile(Projectile* p) {
             p->active = false;
         }
 
-        // Atualização de animação
+        // Atualizaï¿½ï¿½o de animaï¿½ï¿½o
         p->frameCounter += GetFrameTime() * p->frameSpeed;
         if (p->frameCounter >= 1) {
             p->currentFrame++;
@@ -123,7 +136,7 @@ void DrawProjectile(Projectile* p) {
 
 const char* GetAttackName(int valor) {
     switch (valor) {
-    case 1: return "Água";
+    case 1: return "ï¿½gua";
     case 2: return "Terra";
     case 3: return "Vento";
     case 4: return "Fogo";

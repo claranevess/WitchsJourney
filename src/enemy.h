@@ -22,7 +22,7 @@ typedef struct Enemy {
     int maxFrames;
     bool active;
     float scale;
-    int health;
+    float health;
     Rectangle hitbox;
     int tipo;
     int maxHealth;
