@@ -113,7 +113,7 @@ void map1(void)
         DrawText(TextFormat("Vida: %d", cora.health), 10, 10, 20, WHITE);
 
         if (!cora.isAlive)
-            DrawText("Cora morreu!",
+            DrawText("FIM DE JOGO!",
                 screenWidth / 2 - 80, screenHeight / 2, 30, WHITE);
 
         if (framesMsg > 0) {

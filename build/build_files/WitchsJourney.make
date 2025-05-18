@@ -186,14 +186,22 @@ OBJECTS :=
 
 GENERATED += $(OBJDIR)/cora.o
 GENERATED += $(OBJDIR)/draw.o
+GENERATED += $(OBJDIR)/enemy.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/map1.o
 GENERATED += $(OBJDIR)/menu.o
+GENERATED += $(OBJDIR)/projetil.o
+GENERATED += $(OBJDIR)/tools.o
+GENERATED += $(OBJDIR)/wave.o
 OBJECTS += $(OBJDIR)/cora.o
 OBJECTS += $(OBJDIR)/draw.o
+OBJECTS += $(OBJDIR)/enemy.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/map1.o
 OBJECTS += $(OBJDIR)/menu.o
+OBJECTS += $(OBJDIR)/projetil.o
+OBJECTS += $(OBJDIR)/tools.o
+OBJECTS += $(OBJDIR)/wave.o
 
 # Rules
 # #############################################
@@ -263,6 +271,9 @@ $(OBJDIR)/cora.o: ../../src/cora.c
 $(OBJDIR)/draw.o: ../../src/draw.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/enemy.o: ../../src/enemy.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: ../../src/main.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -270,6 +281,15 @@ $(OBJDIR)/map1.o: ../../src/map1.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/menu.o: ../../src/menu.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/projetil.o: ../../src/projetil.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/tools.o: ../../src/tools.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/wave.o: ../../src/wave.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
