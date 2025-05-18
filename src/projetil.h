@@ -34,5 +34,6 @@ void InitProjectile(Projectile* p, Texture2D textures[4]);
 void ShootProjectile(Projectile* p, Cora* cora);
 void UpdateProjectile(Projectile* p);
 void DrawProjectile(Projectile* p);
+float GetDamageMultiplier(int tipoAtaque, int tipoDefesa);
 
 #endif

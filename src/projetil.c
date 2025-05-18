@@ -3,17 +3,22 @@
 #include <stdlib.h>
 
 float GetDamageMultiplier(int tipoAtaque, int tipoDefesa) {
-    float tabela[4][5] = {
-        {0.0f, 1.0f, 2.0f, 0.5f, 1.0f},
-        {1.0f, 0.0f, 0.5f, 2.0f, 1.0f},
-        {0.5f, 2.0f, 0.0f, 1.0f, 1.0f},
-        {2.0f, 0.5f, 1.0f, 0.0f, 1.0f}
+    float tabela[4][4] = {
+        {0.0f, 1.0f, 2.0f, 0.5f},
+        {1.0f, 0.0f, 0.5f, 2.0f},
+        {0.5f, 2.0f, 0.0f, 1.0f},
+        {2.0f, 0.5f, 1.0f, 0.0f}
     };
+
+    if (tipoAtaque < 1 || tipoAtaque > 4 || tipoDefesa < 1 || tipoDefesa > 4) {
+        return 1.0f;// Dano no Boss
+    }
 
     int col = tipoAtaque - 1;
     int row = tipoDefesa - 1;
-
-    return tabela[row][col];
+    float multiplier = tabela[row][col];
+    printf("DEBUG (DENTRO DA FUNÇÃO): resultado = %.2f\n", multiplier);
+    return multiplier; 
 }
 
 Node* CreateAttackTypes() {
@@ -27,7 +32,6 @@ Node* CreateAttackTypes() {
     vento->valor = 3;
     fogo->valor = 4;
 
-    // Encadeamento circular
     agua->prox = terra;
     terra->prox = vento;
     vento->prox = fogo;

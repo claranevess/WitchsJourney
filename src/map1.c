@@ -72,14 +72,30 @@ void map1(void)
                     projectileW.frameRec.width * projectileW.scale * 0.5f,
                     enemies[i].hitbox)) {
 
+                // Verifica se o tipo do projétil é válido
+                if (projectileW.tipo == NULL) {
+                    printf("Erro: projectileW.tipo é NULL!\n");
+                    return;
+                }
+
                 int tipoAtaque = projectileW.tipo->valor;
                 int tipoDefesa = enemies[i].tipo;
 
-                float multiplicador = GetDamageMultiplier(tipoAtaque, tipoDefesa);
+                printf("Debug: tipoAtaque = %d, tipoDefesa = %d\n", tipoAtaque, tipoDefesa);
 
-                float dano = 1.0f * multiplicador;
+                if (tipoAtaque < 1 || tipoAtaque > 4 || tipoDefesa < 1 || tipoDefesa > 4) {
+                    printf("Erro: Tipo de ataque (%d) ou defesa (%d) inválido!\n", tipoAtaque, tipoDefesa);
+                    return;
+                }
 
-                enemies[i].health -= dano;
+                float danoBase = 1.0f;
+                float multiplicador = GetDamageMultiplier(tipoAtaque, enemies[i].tipo);
+                printf("DEBUG (ANTES): multiplicador = %.2f\n", multiplicador);
+                float danoFinal = danoBase * multiplicador;
+
+                printf("Debug: Multiplicador calculado = %.2f\n", multiplicador);
+
+                enemies[i].health -= danoFinal;
                 projectileW.active = false;
 
                 if (enemies[i].health <= 0) {

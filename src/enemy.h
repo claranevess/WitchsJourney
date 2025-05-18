@@ -12,6 +12,7 @@ typedef enum {
 } EnemyDirection;
 
 typedef struct Enemy {
+    int tipo;
     Vector2 position;
     float speed;
     Texture2D texture;
@@ -23,9 +24,8 @@ typedef struct Enemy {
     bool active;
     float scale;
     float health;
+    float maxHealth;
     Rectangle hitbox;
-    int tipo;
-    int maxHealth;
 } Enemy;
 
 void InitEnemy(Enemy* enemy, int tipo);
