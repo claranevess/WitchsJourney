@@ -3,7 +3,10 @@
 #include "enemy.h"
 #include "tools.h"
 #include "projetil.h"
-#include "wave.h"                 
+#include "wave.h"
+#include <string.h> 
+#include <stdlib.h>
+#include <stdio.h>              
 
 extern const int screenWidth;
 extern const int screenHeight;
@@ -12,6 +15,33 @@ static Texture2D background1, magicTex;
 static Texture2D aguaIcon, terraIcon, ventoIcon, fogoIcon;
 
 static void DrawAttackInventory(Node* tipoAtual, float w, float h);
+
+int obterDadosPowerUp(int *x, int *y, int *numero) {
+    FILE *pipe;
+    char buffer[128];
+    const char *comando_python = "python C:\\Users\\felip\\projetos\\WitchsJourney\\src\\gemini.py";
+
+    pipe = _popen(comando_python, "r");
+    if (pipe == NULL) {
+        perror("Erro ao abrir o pipe");
+        return -1;
+    }
+
+    if (fgets(buffer, sizeof(buffer), pipe) != NULL) {
+        if (sscanf(buffer, "%d %d %d", x, y, numero) == 3) {
+            _pclose(pipe);
+            return 0;
+        } else {
+            fprintf(stderr, "Erro: Formato de saída do Python inválido: '%s'\n", buffer);
+        }
+    } else {
+        fprintf(stderr, "Erro ao ler a saída do script Python.\n");
+    }
+
+    _pclose(pipe);
+    return -1;
+}
+
 
 void map1(void)
 {
@@ -35,6 +65,10 @@ void map1(void)
     Cora cora = initCora();
     Projectile projectileW;
     InitProjectile(&projectileW, projectileTextures);
+    int positionPX, positionPY, powerTipo;
+
+    obterDadosPowerUp(&positionPX, &positionPY, &powerTipo);
+    printf("%d %d %d", positionPX, positionPY, powerTipo);
 
 #define MAX_ENEMIES 30
     Enemy enemies[MAX_ENEMIES];
@@ -111,12 +145,12 @@ void map1(void)
             ShootProjectile(&projectileW, &cora);
         UpdateProjectile(&projectileW);
 
-        if (enemiesAlive <= 0) {                           // todos morreram
-            wavePtr = wavePtr->next;                       // próxima horda
+        if (enemiesAlive <= 0) {
+            wavePtr = wavePtr->next;
             waveNum += 1;
-            spawnWave(enemies, MAX_ENEMIES, wavePtr);      // recria inimigos
-            enemiesAlive = wavePtr->normal + wavePtr->boss;// reinicia contagem
-			framesMsg = 180;                               // mostra “HORDA N! durante 3s
+            spawnWave(enemies, MAX_ENEMIES, wavePtr);
+            enemiesAlive = wavePtr->normal + wavePtr->boss;
+			framesMsg = 180;
         }
 
         BeginDrawing();
