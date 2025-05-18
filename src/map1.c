@@ -88,7 +88,7 @@ void map1(void)
 
         if (enemiesAlive <= 0) {                           // todos morreram
             wavePtr = wavePtr->next;                       // próxima horda
-            waveNum = (waveNum % 5) + 1;                   // 1→2→…→5→1
+            waveNum += 1;                   // 1→2→…→5→1
             spawnWave(enemies, MAX_ENEMIES, wavePtr);      // recria inimigos
             enemiesAlive = wavePtr->normal + wavePtr->boss;// reinicia contagem
 			framesMsg = 180;                               // mostra “HORDA N! durante 3s
