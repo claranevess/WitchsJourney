@@ -57,12 +57,12 @@
     <ClInclude Include="..\..\src\projetil.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\wave.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.c" />
-    <ClCompile Include="..\..\src\map1.c">
-      <Filter>Source Files\Map</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\draw.c">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
@@ -80,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\tools.c">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\map1.c">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\wave.c">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

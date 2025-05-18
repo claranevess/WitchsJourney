@@ -537,6 +537,7 @@
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\projetil.h" />
     <ClInclude Include="..\..\src\tools.h" />
+    <ClInclude Include="..\..\src\wave.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cora.c" />
@@ -547,6 +548,7 @@
     <ClCompile Include="..\..\src\menu.c" />
     <ClCompile Include="..\..\src\projetil.c" />
     <ClCompile Include="..\..\src\tools.c" />
+    <ClCompile Include="..\..\src\wave.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="raylib.vcxproj">

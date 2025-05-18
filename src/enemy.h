@@ -25,6 +25,7 @@ typedef struct Enemy {
     int health;
     Rectangle hitbox;
     int tipo;
+    int maxHealth;
 } Enemy;
 
 void InitEnemy(Enemy* enemy, int tipo);

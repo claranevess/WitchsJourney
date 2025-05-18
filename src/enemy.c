@@ -11,27 +11,40 @@ void InitEnemy(Enemy* enemy, int tipo) {
         case 1:
             enemy->texture = LoadTexture("resources/assets/enemy.png");
             enemy->health = 2;
+            enemy->maxHealth = enemy->health;
             enemy->speed = 1.5f;
             enemy->maxFrames = 7;
             break;
         case 2:
-            enemy->texture = LoadTexture("resources/assets/besouro.png");
+            enemy->texture = LoadTexture("resources/assets/morcego.png");
             enemy->health = 1;
-            enemy->speed = 3.0f;
-            enemy->maxFrames = 4;
+            enemy->maxHealth = enemy->health;
+            enemy->speed = 2.0f;
+            enemy->maxFrames = 8;
             break;
         case 3:
-            enemy->texture = LoadTexture("resources/assets/minotauros.png");
+            enemy->texture = LoadTexture("resources/assets/boss.png");
             enemy->health = 5;
+            enemy->maxHealth = enemy->health;
             enemy->speed = 0.8f;
-            enemy->maxFrames = 6;
+            enemy->maxFrames = 4;
             break;
         case 4:
             enemy->texture = LoadTexture("resources/assets/goblin.png");
             enemy->health = 3;
+            enemy->maxHealth = enemy->health;
             enemy->speed = 1.2f;
+            enemy->maxHealth = enemy->health;
             enemy->maxFrames = 6;
             break;
+        case 5: // BOSS
+            enemy->texture = LoadTexture("resources/assets/boss.png");
+            enemy->health = 15;
+            enemy->maxHealth = enemy->health;
+            enemy->speed = 1.0f;
+            enemy->maxFrames = 4;
+            break;
+
     }
 
     enemy->frameSpeed = 10;
@@ -61,7 +74,7 @@ void UpdateEnemy(Enemy* enemy, Vector2 targetPosition, bool coraAlive) {
     if (!enemy->active) return;
 	if (!coraAlive) return;
 
-    // Movimento em dire��o � Cora
+    // Movimento em direcao a Cora
     Vector2 direction = {
         targetPosition.x - enemy->position.x,
         targetPosition.y - enemy->position.y
@@ -76,7 +89,7 @@ void UpdateEnemy(Enemy* enemy, Vector2 targetPosition, bool coraAlive) {
     enemy->position.x += direction.x * enemy->speed;
     enemy->position.y += direction.y * enemy->speed;
 
-    // Anima��o
+    // Animacao
     enemy->frameCounter++;
     if (enemy->frameCounter >= (60 / enemy->frameSpeed)) {
         enemy->frameCounter = 0;
@@ -114,6 +127,30 @@ void DrawEnemy(Enemy* enemy) {
     Vector2 origin = { 0, 0 }; // desenha a partir do canto superior esquerdo
 
     DrawTexturePro(enemy->texture, source, dest, origin, 0.0f, WHITE);
+}
+
+void DrawEnemyHealthBar(Enemy* enemy) {
+    if (!enemy->active) return;
+
+    float barWidth = 50.0f;
+    float barHeight = 6.0f;
+    float spacing = 10.0f;
+
+    // Calcula a posição da barra (acima do inimigo)
+    float x = enemy->position.x + (enemy->frameRec.width * enemy->scale / 2) - barWidth / 2;
+    float y = enemy->position.y - spacing;
+
+    // Percentual de vida
+    float healthPercent = (float)enemy->health / enemy->maxHealth;
+
+    // Fundo da barra (vermelho)
+    DrawRectangle(x, y, barWidth, barHeight, RED);
+
+    // Parte preenchida (verde)
+    DrawRectangle(x, y, barWidth * healthPercent, barHeight, GREEN);
+
+    // Contorno da barra
+    DrawRectangleLines(x, y, barWidth, barHeight, BLACK);
 }
 
 void UnloadEnemy(Enemy* enemy) {

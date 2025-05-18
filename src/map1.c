@@ -3,34 +3,19 @@
 #include "enemy.h"
 #include "tools.h"
 #include "projetil.h"
+#include "wave.h"                 
 
 extern const int screenWidth;
 extern const int screenHeight;
-Texture2D aguaIcon, terraIcon, ventoIcon, fogoIcon, magicTex, background1;
 
-void DrawAttackInventory(Node* tipoAtual, float screenW, float screenH) {
-    float startX = screenW / 2 - 100;
-    float y = screenH - 80;
-    float size = 48;
-    float spacing = 10;
+static Texture2D background1, magicTex;
+static Texture2D aguaIcon, terraIcon, ventoIcon, fogoIcon;
 
-    Texture2D icons[4] = { aguaIcon, terraIcon, ventoIcon, fogoIcon };
-    
-    for (int i = 0; i < 4; i++) {
-        float x = startX + i * (size + spacing);
+static void DrawAttackInventory(Node* tipoAtual, float w, float h);
 
-        if (tipoAtual->valor == i + 1) {
-            DrawRectangleLines(x - 2, y - 2, size + 4, size + 4, YELLOW);
-        }
-
-        DrawTextureEx(icons[i], (Vector2){ x, y }, 0.0f, size / icons[i].width, WHITE);
-    }
-}
-
-void map1(void) {
-    bool showHitboxes = false;
+void map1(void)
+{
     InitWindow(screenWidth, screenHeight, "Mapa 1");
-    InitAudioDevice(); // se usar sons
     SetTargetFPS(60);
 
     background1 = LoadTexture("resources/assets/background1.png");
@@ -38,111 +23,125 @@ void map1(void) {
     aguaIcon = LoadTexture("resources/assets/icons/agua_icon.png");
     terraIcon = LoadTexture("resources/assets/icons/terra_icon.png");
     ventoIcon = LoadTexture("resources/assets/icons/vento_icon.png");
-    fogoIcon = LoadTexture("resources/assets/icons/fogo_icon.png"); 
+    fogoIcon = LoadTexture("resources/assets/icons/fogo_icon.png");
+
     Cora cora = initCora();
-    
+    Projectile proj;
+    InitProjectile(&proj, magicTex);
 
-    // Cria o proj�til e deixa inativo
-    Projectile projectileW;
-    InitProjectile(&projectileW, magicTex);
-
-    #define MAX_ENEMIES 10
-
-    // Criando e inicializando os inimigos
+#define MAX_ENEMIES 30
     Enemy enemies[MAX_ENEMIES];
-    for (int i = 0; i < MAX_ENEMIES; i++) {
-        InitEnemy(&enemies[i],  GetRandomValue(1, 4));
-    }
 
+    // inicializa a lista circular
+    WaveNode* wavePtr = createWave();              // começa na Horda 1
+    spawnWave(enemies, MAX_ENEMIES, wavePtr);      // cria inimigos da Horda 1
+    int enemiesAlive = wavePtr->normal + wavePtr->boss;
 
-    while (!WindowShouldClose()) {
+    int waveNum = 1;      // 1–5
+    int framesMsg = 180;    // exibe “HORDA N!” por 3 s
+    bool showHit = false;  // tecla H mostra hitboxes
+
+    while (!WindowShouldClose())
+    {
         updateCora(&cora);
-        if (IsKeyPressed(KEY_H)) {
-            showHitboxes = !showHitboxes;
-        }
+        if (IsKeyPressed(KEY_H)) showHit = !showHit;
 
-        // Atualize inimigos e fa�a a colis�o AQUI, dentro do loop while
+        // update dos inimigos + colisão
         for (int i = 0; i < MAX_ENEMIES; i++) {
+            bool wasAlive = enemies[i].active;
+
             UpdateEnemy(&enemies[i], cora.position, cora.isAlive);
 
-            // Atualiza a hitbox do inimigo dentro do UpdateEnemy (j� deve estar feito)
-
-            // Colis�o e dano
+            // colisão cora x inimigo 
             if (enemies[i].active && cora.isAlive &&
-                CheckCollisionRecs(cora.hitbox, enemies[i].hitbox)) {
-
-                cora.health -= 1;
-                if (cora.health <= 0) {
-                    cora.health = 0;
-                    cora.isAlive = false;
-                }
+                CheckCollisionRecs(cora.hitbox, enemies[i].hitbox))
+            {
+                cora.health--;
+                if (cora.health <= 0) { cora.health = 0; cora.isAlive = false; }
             }
-        }        
 
-        if (projectileW.active) {
-            for (int i = 0; i < MAX_ENEMIES; i++) {
-                if (enemies[i].active &&
-                    CheckCollisionCircleRec(projectileW.position, projectileW.frameRec.width * projectileW.scale * 0.5f,
-                        enemies[i].hitbox)) {
-
-                    enemies[i].health -= 1;  // dano
-                    projectileW.active = false;
-
-                    if (enemies[i].health <= 0) {
-                        enemies[i].active = false;
-                    }
-                    break;
-                }
+            // colisão projétil x inimigo 
+            if (proj.active && enemies[i].active &&
+                CheckCollisionCircleRec(proj.position,
+                    proj.frameRec.width * proj.scale * 0.5f,
+                    enemies[i].hitbox))
+            {
+                enemies[i].health--;
+                proj.active = false;
+                if (enemies[i].health <= 0) enemies[i].active = false;
             }
+
+			// decrementação de inimigos vivos
+            if (wasAlive && !enemies[i].active) enemiesAlive--;
         }
 
-        // Dispara quando clicar com o bot�o esquerdo do mouse
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cora.isAlive) {
-            ShootProjectile(&projectileW, &cora);
-        }
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cora.isAlive)
+            ShootProjectile(&proj, &cora);
+        UpdateProjectile(&proj);
 
-        // Atualiza a posi��o do proj�til (mesmo se inativo faz nada)
-        UpdateProjectile(&projectileW);
+        if (enemiesAlive <= 0) {                           // todos morreram
+            wavePtr = wavePtr->next;                       // próxima horda
+            waveNum = (waveNum % 5) + 1;                   // 1→2→…→5→1
+            spawnWave(enemies, MAX_ENEMIES, wavePtr);      // recria inimigos
+            enemiesAlive = wavePtr->normal + wavePtr->boss;// reinicia contagem
+			framesMsg = 180;                               // mostra “HORDA N! durante 3s
+        }
 
         BeginDrawing();
+        ClearBackground(BLACK);
         DrawTexture(background1, 0, 0, WHITE);
-        DrawAttackInventory(projectileW.tipo, screenWidth, screenHeight);
+
+        DrawAttackInventory(proj.tipo, screenWidth, screenHeight);
         drawCora(&cora);
+        DrawProjectile(&proj);
 
-        DrawProjectile(&projectileW);
-
-        // Desenhar cada inimigo
         for (int i = 0; i < MAX_ENEMIES; i++) {
             DrawEnemy(&enemies[i]);
-            if (enemies[i].active) {
-                // Desenha a vida acima do inimigo
+            if (enemies[i].active)
                 DrawText(TextFormat("%d", enemies[i].health),
                     enemies[i].position.x + 75,
                     enemies[i].position.y + 40,
-                    20,
-                    WHITE);
-            }
+                    20, WHITE);
         }
 
-        DrawDebugHitboxes(&cora, enemies, MAX_ENEMIES, showHitboxes);
+        DrawDebugHitboxes(&cora, enemies, MAX_ENEMIES, showHit);
 
-        // *** Aqui que voc� coloca a exibi��o da vida e da mensagem ***
         DrawText(TextFormat("Vida: %d", cora.health), 10, 10, 20, WHITE);
 
-        if (!cora.isAlive) {
-            DrawText("Cora morreu!", screenWidth / 2 - 80, screenHeight / 2, 30, WHITE);
+        if (!cora.isAlive)
+            DrawText("Cora morreu!",
+                screenWidth / 2 - 80, screenHeight / 2, 30, WHITE);
+
+        if (framesMsg > 0) {
+            DrawText(TextFormat("HORDA %d!", waveNum),
+                screenWidth / 2 - MeasureText("HORDA 5!", 40) / 2,
+                screenHeight / 2 - 90, 40, YELLOW);
+            framesMsg--;
         }
 
         EndDrawing();
     }
 
     unloadCora(&cora);
-
-    // Descarregar inimigos
-    for (int i = 0; i < MAX_ENEMIES; i++) {
-        UnloadEnemy(&enemies[i]);
-    }
+    for (int i = 0; i < MAX_ENEMIES; i++) UnloadEnemy(&enemies[i]);
     UnloadTexture(magicTex);
     UnloadTexture(background1);
     CloseWindow();
+}
+
+static void DrawAttackInventory(Node* tipoAtual, float w, float h)
+{
+    float startX = w / 2 - 100;
+    float y = h - 80;
+    float size = 48;
+    float spacing = 10;
+
+    Texture2D icons[4] = { aguaIcon, terraIcon, ventoIcon, fogoIcon };
+
+    for (int i = 0; i < 4; i++) {
+        float x = startX + i * (size + spacing);
+        if (tipoAtual->valor == i + 1)
+            DrawRectangleLines(x - 2, y - 2, size + 4, size + 4, YELLOW);
+        DrawTextureEx(icons[i], (Vector2) { x, y }, 0.0f, size / icons[i].width, WHITE);
+    }
 }
